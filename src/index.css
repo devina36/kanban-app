@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-nunito relative;
+}
+
+.label {
+  @apply font-bold text-myBlaxk text-xs leading-5 mb-2;
+}
+
+.modal-input {
+  @apply w-full text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4;
+}
+
+.btn-cancel {
+  @apply font-bold text-sm leading-6 text-myBlaxk py-1 px-4 border-[1px] rounded-lg border-btnGray;
+}
+
+.btn-submit {
+  @apply font-bold text-sm leading-6 text-white py-1 px-4 border-[1px] border-transparent bg-myBlue rounded-lg;
+}
+
+.modal-input-progress {
+  @apply w-2/5 text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4;
+}
+
+.btn-delete {
+  @apply font-bold text-sm leading-6 text-white py-1 px-4 border-[1px] border-transparent bg-myRed rounded-lg;
+}
