@@ -52,8 +52,17 @@ const Home = ({ token }) => {
           'Kosong'
         ) : (
           <div className=" flex gap-4">
-            {data.map((item) => {
-              return <Board key={item.id} item={item} />;
+            {data.map((item, i) => {
+              return (
+                <Board
+                  key={item.id}
+                  item={item}
+                  indL={i}
+                  indR={data.length - 1}
+                  moveR={data[i + 1]}
+                  moveL={data[i - 1]}
+                />
+              );
             })}
           </div>
         )}

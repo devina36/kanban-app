@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import { AiFillCheckCircle } from 'react-icons/ai';
-import { FiArrowLeft, FiArrowRight, FiX } from 'react-icons/fi';
-import { BiEditAlt, BiTrash } from 'react-icons/bi';
+import { FiX } from 'react-icons/fi';
 import { TiWarningOutline } from 'react-icons/ti';
 import { useSelector } from 'react-redux';
 import { getToken } from '../redux/features/tokenSlice';
 import { itemsApi } from '../api/axiosClient';
+import Dots from './Dots';
 
 const barBlue = 'absolute left-0 top-0 bg-myBlue h-4 rounded-l-full';
 const barFull = 'absolute left-0 top-0 bg-myGreen h-4 rounded-full';
 
-const Task = ({ item, todosId }) => {
+const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [remove, setRemove] = useState(false);
@@ -32,6 +32,7 @@ const Task = ({ item, todosId }) => {
     try {
       await itemsApi.updateItem(todosId, item.id, formData, token);
       setEdit(false);
+      setOpen(false);
     } catch (err) {
       console.log(err);
     }
@@ -44,6 +45,7 @@ const Task = ({ item, todosId }) => {
     try {
       await itemsApi.deleteItem(todosId, item.id, token);
       setEdit(false);
+      setOpen(false);
     } catch (err) {
       console.log(err);
     }
@@ -77,49 +79,27 @@ const Task = ({ item, todosId }) => {
           </button>
         </div>
 
-        <div
-          className={`absolute -bottom-1/4 translate-y-3/4 rounded-lg -right-[280px] w-[320px] p-4 z-20 bg-white shadow-1b 
-        ${open ? 'inline' : 'hidden'}`}
-        >
-          <button
-            className="flex gap-x-[22px] text-[#333] items-center mb-3 hover:text-myBlue"
-            onClick={(e) => {
-              handleEdit(e, todosId + 1);
-            }}
-          >
-            <FiArrowRight />
-            <span className=" text-sm leading-6 font-semibold ">Move Right</span>
-          </button>
-          <button
-            className="flex gap-x-[22px] text-[#333] items-center mb-3 hover:text-myBlue"
-            onClick={(e) => {
-              handleEdit(e, todosId - 1);
-            }}
-          >
-            <FiArrowLeft />
-            <span className=" text-sm leading-6 font-semibold">Move Left</span>
-          </button>
-          <button
-            className="flex gap-x-[22px] text-[#333] items-center  mb-3  hover:text-myBlue"
-            onClick={async () => {
-              setEdit(true);
-              setOpen(false);
-            }}
-          >
-            <BiEditAlt />
-            <span className=" text-sm leading-6 font-semibold">Edit</span>
-          </button>
-          <button
-            className="flex gap-x-[22px] text-[#333] items-center hover:text-myRed"
-            onClick={async () => {
-              setRemove(true);
-              setOpen(false);
-            }}
-          >
-            <BiTrash />
-            <span className=" text-sm leading-6 font-semibold">Delete</span>
-          </button>
-        </div>
+        {/* dots */}
+        <Dots
+          open={open}
+          setOpen={() => setOpen(false)}
+          right={(e) => {
+            handleEdit(e, moveR.id);
+          }}
+          indL={indL}
+          indR={indR}
+          left={(e) => {
+            handleEdit(e, moveL.id);
+          }}
+          edits={async () => {
+            setEdit(true);
+            setOpen(false);
+          }}
+          deletes={async () => {
+            setRemove(true);
+            setOpen(false);
+          }}
+        />
       </div>
 
       {/* edit */}

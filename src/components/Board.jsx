@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { itemsApi } from '../api/axiosClient';
 import { getToken } from '../redux/features/tokenSlice';
 import { FiPlusCircle, FiX } from 'react-icons/fi';
 import Task from './Task';
+import { addItem, getItem } from '../redux/features/itemSlice';
 
-const Board = ({ item }) => {
+const Board = ({ item, indL, indR, moveR, moveL }) => {
   const token = useSelector(getToken);
 
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [task, setTask] = useState('');
   const [progress, setProgress] = useState('');
+
+  const dispatch = useDispatch();
+
+  const ItemData = useSelector(getItem);
 
   useEffect(() => {
     const getdata = async () => {
@@ -30,6 +35,7 @@ const Board = ({ item }) => {
 
     try {
       await itemsApi.createItem(item.id, formData, token);
+      dispatch(addItem({ target_todo_id: item.id, name: task, progress_percentage: progress }));
       setOpen(false);
     } catch (err) {
       console.log(err);
@@ -45,7 +51,9 @@ const Board = ({ item }) => {
         <h4 className="text-myBlaxk font-bold text-xs leading-5 mb-2">{item.description}</h4>
         {data.length !== 0 ? (
           data.map((task) => {
-            return <Task key={task.id} item={task} todosId={item.id} />;
+            return (
+              <Task key={item.id} item={task} todosId={item.id} indL={indL} indR={indR} moveR={moveR} moveL={moveL} />
+            );
           })
         ) : (
           <div className="bg-[#FAFAFA] text-sm leading-6 border-btnGray border-[1px] rounded w-full px-4 py-2 text-[#757575]">
