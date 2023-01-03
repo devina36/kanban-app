@@ -18,3 +18,6 @@ Simple Kanban Board and the datas using API. The tech using React.js and to mana
 - React Redux
 - Tailwind Css
 - React Icons
+
+## DEMO 
+https://kanban-board-io.netlify.app/
