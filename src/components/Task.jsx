@@ -9,7 +9,6 @@ import { itemsApi } from '../api/axiosClient';
 import Dots from './Dots';
 import { setItem } from '../redux/features/itemSlice';
 
-const barBlue = 'absolute left-0 top-0 bg-myBlue h-4 rounded-l-full transition-all duration-200 ease-in-out';
 const barFull = 'absolute left-0 top-0 bg-myGreen h-4 rounded-full transition-all duration-200 ease-in-out';
 
 const Task = ({ item, indL, indR, moveR, moveL }) => {
@@ -54,17 +53,32 @@ const Task = ({ item, indL, indR, moveR, moveL }) => {
       console.log(err);
     }
   };
+
+  let tag;
+  let barProgress;
+
+  let color = ['border-myLilac', 'border-mySoftBlue', 'border-myYell', 'border-myOrange'];
+  let progressColor = ['bg-myLilac', 'bg-mySoftBlue', 'bg-myYell', 'bg-myOrange'];
+
+  let tagIndex = indL % color.length;
+  tag = color[tagIndex];
+  barProgress = progressColor[tagIndex];
+
   return (
     <>
-      <div className="bg-[#fafafa] p-4 border-[1px] border-btnGray rounded relative mt-2">
-        <h4 className=" font-bold text-sm leading-6 text-myBlaxk first-letter:capitalize pb-2 border-b-[1px] border-btnGray border-dashed">
+      <div className={`backg p-4 border-[1px] rounded relative mt-2 ${tag}`}>
+        <h4 className=" font-bold text-sm leading-6 text-white first-letter:capitalize pb-2 border-b-[1px] border-btnGray border-dashed">
           {item.name}
         </h4>
         <div className="flex mt-4 gap-x-[30px] items-center justify-between w-full">
           <div className="flex gap-3 items-center w-11/12">
             <div className="w-11/12 h-4 bg-brGray rounded-full relative">
               <div
-                className={item.progress_percentage === 100 ? barFull : barBlue}
+                className={
+                  item.progress_percentage === 100
+                    ? barFull
+                    : `absolute left-0 top-0 ${barProgress} h-4 rounded-l-full transition-all duration-200 ease-in-out`
+                }
                 style={{ width: `${item.progress_percentage}%` }}
               ></div>
             </div>
@@ -108,15 +122,15 @@ const Task = ({ item, indL, indR, moveR, moveL }) => {
 
       {/* edit */}
       <div
-        className={`fixed inset-0 w-full z-50 min-h-screen shadow-1c bg-[#404040]/60 justify-center items-center ${
+        className={`fixed inset-0 w-full z-50 min-h-screen shadow-1c bg-myBlack/60 justify-center items-center ${
           edit ? 'flex ' : 'hidden'
         }`}
       >
-        <div className="w-1/3 bg-white rounded-lg">
+        <div className="w-1/3 bg-myGray rounded-lg">
           <div className="flex justify-between items-center p-6">
-            <h1 className="text-myBlaxk font-bold text-lg">Edit Task</h1>
+            <h1 className="text-white font-bold text-lg">Edit Task</h1>
             <button onClick={() => setEdit(false)}>
-              <FiX size={20} className="text-[#404040]" />
+              <FiX size={20} className="text-myOrange hover:opacity-70" />
             </button>
           </div>
           <form className="px-6 flex flex-col" onSubmit={(e) => handleEdit(e, item.todo_id)}>
@@ -127,7 +141,7 @@ const Task = ({ item, indL, indR, moveR, moveL }) => {
               id="title"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              className="modal-input "
+              className="modal-input"
               placeholder="Type your Task"
             />
             <label className="label">Progress</label>
@@ -156,22 +170,22 @@ const Task = ({ item, indL, indR, moveR, moveL }) => {
 
       {/* delete */}
       <div
-        className={`fixed inset-0 w-full z-50 min-h-screen shadow-1c bg-[#404040]/60 justify-center items-center ${
+        className={`fixed inset-0 w-full z-50 min-h-screen shadow-1c bg-myBlack/60 justify-center items-center ${
           remove ? 'flex ' : 'hidden'
         }`}
       >
-        <div className="w-1/3 bg-white rounded-lg">
+        <div className="w-1/3 bg-myGray rounded-lg">
           <div className="flex justify-between items-center p-6">
             <div className="flex items-center gap-x-3">
-              <TiWarningOutline size={20} className="text-myRed" />
-              <h1 className="text-myBlaxk font-bold text-lg">Delete Task</h1>
+              <TiWarningOutline size={20} className="text-myOrange" />
+              <h1 className="text-white font-bold text-lg">Delete Task</h1>
             </div>
             <button onClick={() => setRemove(false)}>
-              <FiX size={20} />
+              <FiX size={20} className="text-myOrange hover:opacity-70" />
             </button>
           </div>
           <form className="px-6 flex flex-col" onSubmit={handleRemove}>
-            <p>Are you sure want to delete this task? your action can’t be reverted.</p>
+            <p className="text-white">Are you sure want to delete this task? your action can’t be reverted.</p>
             <div className="flex self-end gap-x-[10px] py-6">
               <button type="button" className="btn-cancel" onClick={() => setRemove(false)}>
                 Cancel

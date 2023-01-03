@@ -13,10 +13,14 @@ export const tokenSlice = createSlice({
       state.token = action.payload;
       localStorage.setItem('token', JSON.stringify(state.token));
     },
+    deletToken: (state, action) => {
+      state.token = '';
+      localStorage.removeItem('token');
+    },
   },
 });
 
 export const getToken = (state) => state.token.token;
-export const { setToken } = tokenSlice.actions;
+export const { setToken, deletToken } = tokenSlice.actions;
 
 export default tokenSlice.reducer;

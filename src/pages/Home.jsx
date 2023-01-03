@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FiPlus, FiX } from 'react-icons/fi';
+import { FiPlus, FiX, FiLogOut } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { todosApi } from '../api/axiosClient';
 import Board from '../components/Board';
 import { setTodos } from '../redux/features/itemSlice';
+import { deletToken } from '../redux/features/tokenSlice';
 
 const Home = ({ token }) => {
   const [open, setOpen] = useState(false);
@@ -12,6 +14,7 @@ const Home = ({ token }) => {
   const [data, setData] = useState([]);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const Todos = useSelector((state) => state.kanban.todos);
 
@@ -36,30 +39,43 @@ const Home = ({ token }) => {
     try {
       await todosApi.createTodos(formData, token).then((res) => dispatch(setTodos(res.data)));
       setOpen(false);
+      setTitle('');
+      setDesc('');
     } catch (err) {
       console.log(err);
+      setTitle('');
+      setDesc('');
     }
   };
 
   return (
     <>
-      <header className="bg-white px-6 py-[18px] border-b-[1px] border-[#E0E0E0] fixed w-full top-0">
+      <header className="bg-myBlack/70 px-6 py-[18px] shadow-sm border-b-[1px] flex justify-between items-center backdrop-blur-md border-myGreen fixed w-full top-0">
         <div className="flex gap-x-[10px] items-center">
-          <h1 className=" font-bold text-lg text-myBlaxk">Product</h1>
+          <h1 className=" font-bold text-lg text-white">Kanban Board</h1>
           <button
-            className="flex gap-x-1 px-4 py-1 shadow-1a rounded-lg items-center bg-myBlue text-white"
+            className="flex gap-x-1 px-4 py-1 shadow-1a rounded-lg items-center bg-myGreen text-myBlack"
             onClick={() => setOpen(true)}
           >
             <FiPlus size={16} className=" font-bold text-xs" />
-            <span className=" font-bold text-xs leading-5">Add New Group</span>
+            <span className=" font-bold text-xs leading-5">Add New Board</span>
           </button>
         </div>
+        <button
+          className="text-white"
+          onClick={() => {
+            dispatch(deletToken());
+            navigate('/login');
+          }}
+        >
+          <FiLogOut />
+        </button>
       </header>
       {/* <main className="px-6 mt-24"> */}
       {!data.length ? (
         'Kosong'
       ) : (
-        <main className=" px-6 pt-24 w-full flex gap-4 max-h-screen overflow-x-scroll snap-mandatory snap-x scroll-p-4">
+        <main className=" px-6 mt-24 mb-10 w-full flex gap-4 snap-mandatory snap-x scroll-p-4">
           {data.map((item, i) => {
             return (
               <Board
@@ -78,15 +94,15 @@ const Home = ({ token }) => {
 
       {/* modal create todos */}
       <div
-        className={`fixed inset-0 w-full z-50 min-h-screen bg-[#404040]/60 justify-center items-center ${
+        className={`fixed inset-0 w-full z-50 min-h-screen bg-myBlack/60 justify-center items-center ${
           open ? 'flex ' : 'hidden'
         }`}
       >
-        <div className="w-1/3 bg-white rounded-lg">
+        <div className="w-1/3 bg-myGray rounded-lg">
           <div className="flex justify-between items-center p-6">
-            <h1 className="text-myBlaxk font-bold text-lg">Create Tados</h1>
+            <h1 className="text-white font-bold text-lg">Create Tados</h1>
             <button onClick={() => setOpen(false)}>
-              <FiX size={20} className="text-[#404040]" />
+              <FiX size={20} className="text-myOrange hover:opacity-70" />
             </button>
           </div>
           <form className="px-6 flex flex-col" onSubmit={handleSubmit}>

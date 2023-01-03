@@ -3,29 +3,33 @@
 @tailwind utilities;
 
 body {
-  @apply font-nunito relative box-border m-0 p-0 overflow-auto;
+  @apply font-nunito relative box-border m-0 p-0 bg-myBlack max-h-screen;
 }
 
 .label {
-  @apply font-bold text-myBlaxk text-xs leading-5 mb-2;
+  @apply font-bold text-white text-xs leading-5 mb-2;
 }
 
 .modal-input {
-  @apply w-full text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4 text-[#404040];
+  @apply w-full text-xs leading-5 px-4 py-2 border-2 bg-myGray text-white border-brGray rounded-lg mb-4;
 }
 
 .btn-cancel {
-  @apply font-bold text-sm leading-6 text-myBlaxk py-1 px-4 border-[1px] rounded-lg border-btnGray;
+  @apply font-bold text-sm leading-6 text-white py-1 px-4 border-[1px] rounded-lg hover:bg-mySoftBlue/70 transition-all duration-150 ease-in-out border-btnGray;
 }
 
 .btn-submit {
-  @apply font-bold text-sm leading-6 text-white py-1 px-4 border-[1px] border-transparent bg-myBlue rounded-lg;
+  @apply font-bold text-sm leading-6 text-myBlack py-1 px-4 border-[1px] border-transparent bg-myGreen hover:bg-mySoftBlue/70 transition-all duration-150 ease-in-out rounded-lg;
 }
 
 .modal-input-progress {
-  @apply w-2/5 text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4 text-[#404040];
+  @apply w-2/5 text-xs leading-5 px-4 py-2 border-2 border-brGray text-white rounded-lg mb-4 bg-myGray;
 }
 
 .btn-delete {
-  @apply font-bold text-sm leading-6 text-white py-1 px-4 border-[1px] border-transparent bg-myRed rounded-lg;
+  @apply font-bold text-sm leading-6 text-white py-1 px-4 border-[1px] border-transparent bg-myOrange hover:bg-mySoftBlue/70 transition-all duration-150 ease-in-out rounded-lg;
+}
+
+.backg {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), #121212;
 }

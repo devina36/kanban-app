@@ -38,41 +38,42 @@ const Board = ({ item, indL, indR, moveR, moveL }) => {
     try {
       await itemsApi.createItem(item.id, formData, token).then((res) => dispatch(setItem(res.data)));
       setOpen(false);
+      setTask('');
+      setProgress('');
     } catch (err) {
       console.log(err);
+      setTask('');
+      setProgress('');
     }
   };
 
   let tag;
 
-  let color = [
-    `text-myBlue bg-tagbg border-brBlue`,
-    `text-myYellow bg-bgYellow border-brYellow`,
-    `text-myRed bg-bgRed border-brRed`,
-    `text-myGreen bg-bgGreen border-brGreen`,
-  ];
+  let color = ['bg-myLilac', 'bg-mySoftBlue', 'bg-myYell', 'bg-myOrange'];
 
   let tagIndex = indL % color.length;
   tag = color[tagIndex];
 
   return (
     <>
-      <div className={`p-4 rounded-lg border-[1px] min-w-[326px] snap-start h-fit ${tag}`}>
-        <h3 className={`px-2 py-[2px] rounded mb-2 font-normal text-xs leading-5 capitalize border-[1px] w-fit ${tag}`}>
+      <div className="rounded-lg min-w-[326px] snap-start h-fit backg">
+        <h3 className={` rounded-t-lg mb-2 font-normal text-base leading-5 capitalize px-4 py-4 ${tag}`}>
           {item.title}
         </h3>
-        <h4 className="text-myBlaxk font-bold text-xs leading-5 mb-2">{item.description}</h4>
-        {data.length !== 0 ? (
-          data.map((task) => {
-            return <Task key={task.id} item={task} indL={indL} indR={indR} moveR={moveR} moveL={moveL} />;
-          })
-        ) : (
-          <div className="bg-[#FAFAFA] text-sm leading-6 border-btnGray border-[1px] rounded w-full px-4 py-2 text-[#757575]">
-            No Task
-          </div>
-        )}
+        <h4 className="text-white font-bold text-xs leading-5 mb-2 p-4">{item.description}</h4>
+        <div className="px-4">
+          {data.length !== 0 ? (
+            data.map((task) => {
+              return <Task key={task.id} item={task} indL={indL} indR={indR} moveR={moveR} moveL={moveL} />;
+            })
+          ) : (
+            <div className="bg-[#FAFAFA] text-sm leading-6 border-btnGray border-[1px] rounded w-full px-4 py-2 text-[#757575]">
+              No Task
+            </div>
+          )}
+        </div>
         <button
-          className="flex gap-x-2 items-center flex-wrap mt-2 text-[#1D1F20] hover:opacity-60"
+          className="flex p-4 gap-x-2 items-center flex-wrap mt-2 text-white hover:opacity-60"
           onClick={() => setOpen(true)}
         >
           <FiPlusCircle size={17} />
@@ -82,15 +83,15 @@ const Board = ({ item, indL, indR, moveR, moveL }) => {
 
       {/* modal create task */}
       <div
-        className={`fixed inset-0 w-full z-50 min-h-screen shadow-1c bg-[#404040]/60 justify-center items-center ${
+        className={`fixed inset-0 w-full z-50 min-h-screen shadow-1c bg-myBlack/60 justify-center items-center ${
           open ? 'flex ' : 'hidden'
         }`}
       >
-        <div className="w-1/3 bg-white rounded-lg">
+        <div className="w-1/3 bg-myGray rounded-lg">
           <div className="flex justify-between items-center p-6">
-            <h1 className="text-myBlaxk font-bold text-lg">Create Task</h1>
+            <h1 className="text-white font-bold text-lg">Create Task</h1>
             <button onClick={() => setOpen(false)}>
-              <FiX size={20} className="text-[#404040]" />
+              <FiX size={20} className="text-myOrange hover:opacity-70" />
             </button>
           </div>
           <form className="px-6 flex flex-col" onSubmit={handleSubmit}>

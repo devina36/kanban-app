@@ -23,14 +23,12 @@ const Dots = ({ open, setOpen, left, right, edits, deletes, indL, indR }) => {
   return (
     <div
       ref={ref}
-      className={`absolute -bottom-1/4 translate-y-3/4 rounded-lg  w-[320px] p-4 z-20 bg-white shadow-1b ${
-        indL === indR ? 'right-2' : ' -right-[280px]'
-      }`}
+      className={`absolute -bottom-1/4 translate-y-3/4 rounded-lg  w-[320px] p-4 z-20 backg shadow-1b -right-[280px]`}
     >
       {indL === indR ? (
         ''
       ) : (
-        <button className="flex gap-x-[22px] text-[#333] items-center mb-3 hover:text-myBlue" onClick={right}>
+        <button className="flex gap-x-[22px] text-white items-center mb-3 hover:text-myGreen" onClick={right}>
           <FiArrowRight />
           <span className=" text-sm leading-6 font-semibold ">Move Right</span>
         </button>
@@ -39,17 +37,17 @@ const Dots = ({ open, setOpen, left, right, edits, deletes, indL, indR }) => {
       {indL === 0 ? (
         ''
       ) : (
-        <button className="flex gap-x-[22px] text-[#333] items-center mb-3 hover:text-myBlue" onClick={left}>
+        <button className="flex gap-x-[22px] text-white items-center mb-3 hover:text-myGreen" onClick={left}>
           <FiArrowLeft />
           <span className=" text-sm leading-6 font-semibold">Move Left</span>
         </button>
       )}
 
-      <button className="flex gap-x-[22px] text-[#333] items-center  mb-3  hover:text-myBlue" onClick={edits}>
+      <button className="flex gap-x-[22px] text-white items-center  mb-3  hover:text-myGreen" onClick={edits}>
         <BiEditAlt />
         <span className=" text-sm leading-6 font-semibold">Edit</span>
       </button>
-      <button className="flex gap-x-[22px] text-[#333] items-center hover:text-myRed" onClick={deletes}>
+      <button className="flex gap-x-[22px] text-white items-center hover:text-myOrange" onClick={deletes}>
         <BiTrash />
         <span className=" text-sm leading-6 font-semibold">Delete</span>
       </button>

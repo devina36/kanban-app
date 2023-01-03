@@ -10,7 +10,7 @@ module.exports = {
         brBlue: '#4DB5BC',
         brGray: '#EDEDED',
         btnGray: '#E0E0E0',
-        myGreen: '#43936C',
+
         myRed: '#E11428',
         myYellow: '#FA9810',
         brYellow: '#FEEABC',
@@ -19,6 +19,14 @@ module.exports = {
         bgRed: '#FFFAFA',
         brGreen: '#B8DBCA',
         bgGreen: '#F8FBF9',
+
+        myGreen: '#48F2C7',
+        myBlack: '#121212',
+        myLilac: '#E2AEF5',
+        myYell: '#FFDC5D',
+        myOrange: '#F9795D',
+        mySoftBlue: '#AEC2F5',
+        myGray: '#363636',
       },
       fontFamily: {
         nunito: ['Nunito Sans, sans-serif'],

@@ -32,41 +32,42 @@ const Login = () => {
 
   return (
     <main className="min-h-screen flex justify-center w-full items-center">
-      <form
-        className="flex flex-col w-2/6 bg-tagbg border-[1px] border-brBlue rounded-lg px-5 py-8"
-        onSubmit={handleSubmit}
-      >
-        <h1 className="text-center font-bold text-3xl mb-5">Login</h1>
-        <label className="text-myBlue mt-5">Email</label>
-        <input
-          type="email"
-          className=" h-10 px-4 py-3 rounded-lg border-[1px] border-brBlue"
-          placeholder="Input your email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label className="text-myBlue mt-5">Password</label>
-        <input
-          type="password"
-          className=" h-10 px-4 py-3 rounded-lg border-[1px] border-brBlue"
-          placeholder="Input your password"
-          id="password"
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="my-5 bg-myBlue px-4 py-3 text-white rounded-lg transition-all duration-100 ease-in-out hover:bg-[#00878e] hover:text-myBlaxk"
-        >
-          Login
-        </button>
-        <h3 className=" text-sm text-center">
-          Need an account? &nbsp;
-          <Link to={'/sign-up'} className="text-myBlue underline hover:text-myBlaxk">
-            Sign-up
-          </Link>
-        </h3>
+      <form className="flex flex-col w-2/6 backg rounded-lg" onSubmit={handleSubmit}>
+        <h1 className="text-center font-bold text-3xl bg-myGreen rounded-t-lg mb-5 py-8 text-myBlack">Login</h1>
+        <div className="px-5 pb-8 flex flex-col">
+          <label className="text-white mt-5">Email</label>
+          <input
+            type="email"
+            required
+            className=" h-10 px-4 py-3 rounded-lg text-white backg border-[1px] border-myGreen"
+            placeholder="Input your email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <label className="text-white mt-5">Password</label>
+          <input
+            type="password"
+            required
+            className=" h-10 px-4 py-3 text-white rounded-lg backg border-[1px] border-myGreen"
+            placeholder="Input your password"
+            id="password"
+            value={pass}
+            onChange={(e) => setPass(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="my-5 bg-myGreen px-4 py-3 text-myBlack rounded-lg transition-all duration-100 ease-in-out hover:opacity-60"
+          >
+            Login
+          </button>
+          <h3 className=" text-sm text-center text-white">
+            Need an account? &nbsp;
+            <Link to={'/sign-up'} className="text-myGreen underline hover:text-white">
+              Sign-up
+            </Link>
+          </h3>
+        </div>
       </form>
     </main>
   );
