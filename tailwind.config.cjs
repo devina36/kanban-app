@@ -12,6 +12,13 @@ module.exports = {
         btnGray: '#E0E0E0',
         myGreen: '#43936C',
         myRed: '#E11428',
+        myYellow: '#FA9810',
+        brYellow: '#FEEABC',
+        bgYellow: '#FFFCF5',
+        brRed: '#F5B1B7',
+        bgRed: '#FFFAFA',
+        brGreen: '#B8DBCA',
+        bgGreen: '#F8FBF9',
       },
       fontFamily: {
         nunito: ['Nunito Sans, sans-serif'],

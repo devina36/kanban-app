@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { FiX } from 'react-icons/fi';
 import { TiWarningOutline } from 'react-icons/ti';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getToken } from '../redux/features/tokenSlice';
 import { itemsApi } from '../api/axiosClient';
 import Dots from './Dots';
+import { setItem } from '../redux/features/itemSlice';
 
-const barBlue = 'absolute left-0 top-0 bg-myBlue h-4 rounded-l-full';
-const barFull = 'absolute left-0 top-0 bg-myGreen h-4 rounded-full';
+const barBlue = 'absolute left-0 top-0 bg-myBlue h-4 rounded-l-full transition-all duration-200 ease-in-out';
+const barFull = 'absolute left-0 top-0 bg-myGreen h-4 rounded-full transition-all duration-200 ease-in-out';
 
-const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
+const Task = ({ item, indL, indR, moveR, moveL }) => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [remove, setRemove] = useState(false);
@@ -19,6 +20,8 @@ const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
   const [progress, setProgress] = useState(item.progress_percentage);
 
   const token = useSelector(getToken);
+
+  const dispatch = useDispatch();
 
   const handleEdit = async (e, todo) => {
     e.preventDefault();
@@ -30,7 +33,7 @@ const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
     };
 
     try {
-      await itemsApi.updateItem(todosId, item.id, formData, token);
+      await itemsApi.updateItem(item.todo_id, item.id, formData, token).then((res) => dispatch(setItem(res.data)));
       setEdit(false);
       setOpen(false);
     } catch (err) {
@@ -41,9 +44,10 @@ const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
   const handleRemove = async (e) => {
     e.preventDefault();
 
-    console.log(todosId, item.id);
+    console.log(item.todo_id, item.id);
     try {
-      await itemsApi.deleteItem(todosId, item.id, token);
+      await itemsApi.deleteItem(item.todo_id, item.id, token);
+      dispatch(setItem({ id: item.id }));
       setEdit(false);
       setOpen(false);
     } catch (err) {
@@ -112,10 +116,10 @@ const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
           <div className="flex justify-between items-center p-6">
             <h1 className="text-myBlaxk font-bold text-lg">Edit Task</h1>
             <button onClick={() => setEdit(false)}>
-              <FiX size={20} />
+              <FiX size={20} className="text-[#404040]" />
             </button>
           </div>
-          <form className="px-6 flex flex-col" onSubmit={(e) => handleEdit(e, todosId)}>
+          <form className="px-6 flex flex-col" onSubmit={(e) => handleEdit(e, item.todo_id)}>
             <label className="label">Task Name</label>
             <input
               type="text"
@@ -123,7 +127,7 @@ const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
               id="title"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              className="modal-input"
+              className="modal-input "
               placeholder="Type your Task"
             />
             <label className="label">Progress</label>
@@ -135,7 +139,7 @@ const Task = ({ item, todosId, indL, indR, moveR, moveL }) => {
               id="description"
               value={progress}
               onChange={(e) => setProgress(e.target.value)}
-              className="modal-input-progress"
+              className="modal-input-progress "
               placeholder="Type your Progress"
             />
             <div className="flex self-end gap-x-[10px] py-6">

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FiPlus, FiX } from 'react-icons/fi';
+import { useDispatch, useSelector } from 'react-redux';
 import { todosApi } from '../api/axiosClient';
 import Board from '../components/Board';
+import { setTodos } from '../redux/features/itemSlice';
 
 const Home = ({ token }) => {
   const [open, setOpen] = useState(false);
@@ -9,13 +11,19 @@ const Home = ({ token }) => {
   const [desc, setDesc] = useState('');
   const [data, setData] = useState([]);
 
+  const dispatch = useDispatch();
+
+  const Todos = useSelector((state) => state.kanban.todos);
+
   useEffect(() => {
     const getdata = async () => {
-      await todosApi.getTodos(token).then((res) => setData(res.data));
+      await todosApi.getTodos(token).then((res) => {
+        setData(res.data);
+      });
     };
 
     getdata();
-  }, [data]);
+  }, [Todos]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +34,7 @@ const Home = ({ token }) => {
     };
 
     try {
-      await todosApi.createTodos(formData, token);
+      await todosApi.createTodos(formData, token).then((res) => dispatch(setTodos(res.data)));
       setOpen(false);
     } catch (err) {
       console.log(err);
@@ -35,7 +43,7 @@ const Home = ({ token }) => {
 
   return (
     <>
-      <header className="bg-white px-6 py-[18px] border-b-[1px] border-[#E0E0E0] sticky">
+      <header className="bg-white px-6 py-[18px] border-b-[1px] border-[#E0E0E0] fixed w-full top-0">
         <div className="flex gap-x-[10px] items-center">
           <h1 className=" font-bold text-lg text-myBlaxk">Product</h1>
           <button
@@ -47,26 +55,26 @@ const Home = ({ token }) => {
           </button>
         </div>
       </header>
-      <main className="px-6 mt-6">
-        {!data.length ? (
-          'Kosong'
-        ) : (
-          <div className=" flex gap-4">
-            {data.map((item, i) => {
-              return (
-                <Board
-                  key={item.id}
-                  item={item}
-                  indL={i}
-                  indR={data.length - 1}
-                  moveR={data[i + 1]}
-                  moveL={data[i - 1]}
-                />
-              );
-            })}
-          </div>
-        )}
-      </main>
+      {/* <main className="px-6 mt-24"> */}
+      {!data.length ? (
+        'Kosong'
+      ) : (
+        <main className=" px-6 pt-24 w-full flex gap-4 max-h-screen overflow-x-scroll snap-mandatory snap-x scroll-p-4">
+          {data.map((item, i) => {
+            return (
+              <Board
+                key={item.id}
+                item={item}
+                indL={i}
+                indR={data.length - 1}
+                moveR={data[i + 1]}
+                moveL={data[i - 1]}
+              />
+            );
+          })}
+        </main>
+      )}
+      {/* </main> */}
 
       {/* modal create todos */}
       <div
@@ -78,7 +86,7 @@ const Home = ({ token }) => {
           <div className="flex justify-between items-center p-6">
             <h1 className="text-myBlaxk font-bold text-lg">Create Tados</h1>
             <button onClick={() => setOpen(false)}>
-              <FiX size={20} />
+              <FiX size={20} className="text-[#404040]" />
             </button>
           </div>
           <form className="px-6 flex flex-col" onSubmit={handleSubmit}>

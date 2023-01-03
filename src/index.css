@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply font-nunito relative;
+  @apply font-nunito relative box-border m-0 p-0 overflow-auto;
 }
 
 .label {
@@ -11,7 +11,7 @@ body {
 }
 
 .modal-input {
-  @apply w-full text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4;
+  @apply w-full text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4 text-[#404040];
 }
 
 .btn-cancel {
@@ -23,7 +23,7 @@ body {
 }
 
 .modal-input-progress {
-  @apply w-2/5 text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4;
+  @apply w-2/5 text-xs leading-5 px-4 py-2 border-2 border-brGray rounded-lg mb-4 text-[#404040];
 }
 
 .btn-delete {

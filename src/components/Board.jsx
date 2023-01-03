@@ -4,7 +4,7 @@ import { itemsApi } from '../api/axiosClient';
 import { getToken } from '../redux/features/tokenSlice';
 import { FiPlusCircle, FiX } from 'react-icons/fi';
 import Task from './Task';
-import { addItem, getItem } from '../redux/features/itemSlice';
+import { setItem } from '../redux/features/itemSlice';
 
 const Board = ({ item, indL, indR, moveR, moveL }) => {
   const token = useSelector(getToken);
@@ -16,14 +16,16 @@ const Board = ({ item, indL, indR, moveR, moveL }) => {
 
   const dispatch = useDispatch();
 
-  const ItemData = useSelector(getItem);
+  const datas = useSelector((state) => state.kanban.item);
 
   useEffect(() => {
     const getdata = async () => {
-      await itemsApi.getItem(item.id, token).then((res) => setData(res.data));
+      await itemsApi.getItem(item.id, token).then((res) => {
+        setData(res.data);
+      });
     };
     getdata();
-  }, [data]);
+  }, [datas]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,26 +36,35 @@ const Board = ({ item, indL, indR, moveR, moveL }) => {
     };
 
     try {
-      await itemsApi.createItem(item.id, formData, token);
-      dispatch(addItem({ target_todo_id: item.id, name: task, progress_percentage: progress }));
+      await itemsApi.createItem(item.id, formData, token).then((res) => dispatch(setItem(res.data)));
       setOpen(false);
     } catch (err) {
       console.log(err);
     }
   };
 
+  let tag;
+
+  let color = [
+    `text-myBlue bg-tagbg border-brBlue`,
+    `text-myYellow bg-bgYellow border-brYellow`,
+    `text-myRed bg-bgRed border-brRed`,
+    `text-myGreen bg-bgGreen border-brGreen`,
+  ];
+
+  let tagIndex = indL % color.length;
+  tag = color[tagIndex];
+
   return (
     <>
-      <div className=" p-4 rounded-lg bg-tagbg border-[1px] border-brBlue w-1/4 h-fit">
-        <h3 className=" px-2 py-[2px] rounded mb-2 font-normal text-xs leading-5 text-myBlue capitalize bg-tagbg border-[1px] border-brBlue w-fit">
+      <div className={`p-4 rounded-lg border-[1px] min-w-[326px] snap-start h-fit ${tag}`}>
+        <h3 className={`px-2 py-[2px] rounded mb-2 font-normal text-xs leading-5 capitalize border-[1px] w-fit ${tag}`}>
           {item.title}
         </h3>
         <h4 className="text-myBlaxk font-bold text-xs leading-5 mb-2">{item.description}</h4>
         {data.length !== 0 ? (
           data.map((task) => {
-            return (
-              <Task key={item.id} item={task} todosId={item.id} indL={indL} indR={indR} moveR={moveR} moveL={moveL} />
-            );
+            return <Task key={task.id} item={task} indL={indL} indR={indR} moveR={moveR} moveL={moveL} />;
           })
         ) : (
           <div className="bg-[#FAFAFA] text-sm leading-6 border-btnGray border-[1px] rounded w-full px-4 py-2 text-[#757575]">
@@ -79,7 +90,7 @@ const Board = ({ item, indL, indR, moveR, moveL }) => {
           <div className="flex justify-between items-center p-6">
             <h1 className="text-myBlaxk font-bold text-lg">Create Task</h1>
             <button onClick={() => setOpen(false)}>
-              <FiX size={20} />
+              <FiX size={20} className="text-[#404040]" />
             </button>
           </div>
           <form className="px-6 flex flex-col" onSubmit={handleSubmit}>
